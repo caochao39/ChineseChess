@@ -8,4 +8,4 @@ ChineseChessGame.o: ChineseChessGame.cpp ChineseChessGame.h
 	g++ -c ChineseChessGame.cpp
 
 clean:
-	rm *o ChineseChessGame
+	rm *.o
