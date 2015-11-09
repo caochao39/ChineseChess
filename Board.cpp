@@ -7,6 +7,7 @@ void Board::Init()
       river_cross_[i] = 0;
     }
   */
-  
 
 }
+
+
