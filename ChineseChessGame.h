@@ -4,6 +4,9 @@
 #include "Board.h"
 #include "Piece.h"
 #include "Horse.h"
+#include "Bishop.h"
+#include "Advisor.h"
+#include "Rook.h"
 class ChineseChessGame
 {
  public:
