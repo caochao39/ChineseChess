@@ -4,7 +4,7 @@ ChineseChessGame: main.o ChineseChessGame.o
 main.o: main.cpp ChineseChessGame.h
 	g++ -c main.cpp -std=c++11
 
-ChineseChessGame.o: ChineseChessGame.cpp ChineseChessGame.h Board.o Piece.o Horse.o General.o
+ChineseChessGame.o: ChineseChessGame.cpp ChineseChessGame.h Board.o Piece.o Horse.o General.o Advisor.o
 	g++ -c ChineseChessGame.cpp -std=c++11
 
 Board.o: Board.cpp Board.h
@@ -18,6 +18,9 @@ Horse.o: Horse.cpp Horse.h Piece.h
 
 General.o: General.cpp General.h Piece.h
 	g++ -c General.cpp -std=c++11
+
+Advisor.o: Advisor.cpp Advisor.h Piece.h
+	g++ -c Advisor.cpp -std=c++11
 
 clean:
 	rm *.o
