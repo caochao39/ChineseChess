@@ -6,7 +6,7 @@ class Bishop : public Piece
  public:
   char bishop_dir_[4] = {-0x22, -0x1e, +0x22, +0x1e};
   char bishop_check_[4] = {-0x11, -0x0f, +0x11, +0x0f};
-    unsigned char in_board_[256] = {
+  unsigned char in_board_[256] = {
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
