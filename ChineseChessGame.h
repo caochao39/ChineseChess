@@ -7,6 +7,7 @@
 #include "Bishop.h"
 #include "Advisor.h"
 #include "Rook.h"
+#include "Pawn.h"
 class ChineseChessGame
 {
  public:
