@@ -7,12 +7,12 @@ void Pawn::GenMove(unsigned char cur_pos, unsigned char side, Board board)
   for(int i = 0; i < 3; i++)
     {
       next_move = cur_pos + pawn_dir_[side][i];
-      if(pawn_check_[side][next_move])
-	{
-	  if(!board.board_[next_move] & side)
-	    {
-	      SaveMove(cur_pos, next_move);
-	    }
-	}
+      if(in_board_[side][next_move])
+        {
+          if(!(board.board_[next_move] & sideTag))
+            {
+              SaveMove(cur_pos, next_move);
+            }
+        }
     }
 }

@@ -1,10 +1,9 @@
-
 #ifndef PIECE_H
 #define PIECE_H
 #include "Board.h"
 
 typedef struct{
-  unsigned char from, to;
+  short from, to;
 }move;
 
 
@@ -36,6 +35,7 @@ class Piece
     
     void InitMove();
     void SaveMove(unsigned char from, unsigned char to);
-    virtual void GenMove(unsigned char cur_pos, unsigned char side, Board board);
+    virtual void GenMove(unsigned char cur_pos, unsigned char side, Board board){}
 };
 #endif
+//virtual void  Piece::GenMove(unsigned char cur_pos, unsigned char side, Board board){}
