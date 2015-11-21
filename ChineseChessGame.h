@@ -11,10 +11,14 @@
 class ChineseChessGame
 {
  public:
-  //  Board board_;
-  bool finished_;
+ 	Board board_;
+ 	bool finished_;
   unsigned char side_;
-  void start();
+  ChineseChessGame();//constructor
+  void Start();
+  void GenAllMove(int side);
+  void ShowBoard();
+  void PlayerMove();
+  void MovePiece(unsigned char from, unsigned char to, bool side);
 };
-
 #endif

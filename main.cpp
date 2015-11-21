@@ -3,5 +3,5 @@
 int main()
 {
   ChineseChessGame game;
-  game.start();
+  game.Start();
 }

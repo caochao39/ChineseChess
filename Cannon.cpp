@@ -15,7 +15,7 @@ void Cannon::GenMove(unsigned char cur_pos, unsigned char side, Board board)
             {
               break;
             }
-          else if(board.board[next_move] == 0)
+          else if(board.board_[next_move] == 0)
             {
               if(!overFlag)
                 {
