@@ -92,7 +92,17 @@ void ChineseChessGame::PlayerMove()
         }
     }
 }
-
+void ChineseChessGame::AIMovePiece(move & mv){
+      short tmp = board_.board_[mv.from];
+      board_.board_[mv.from] = board_.board_[mv.to];
+      board_.board_[mv.to] = tmp;
+}
+void ChineseChessGame::AIUnMovePiece(move & mv)
+{
+      short tmp = board_.board_[mv.to];
+      board_.board_[mv.to] = board_.board_[mv.from];
+      board_.board_[mv.from] = tmp;
+}
 void ChineseChessGame::MovePiece(unsigned char from, unsigned char to, bool side)
 {
   int sideTag = side * 16 + 16;  

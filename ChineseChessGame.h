@@ -24,6 +24,8 @@ class ChineseChessGame
   void PlayerMove();
   void MovePiece(unsigned char from, unsigned char to, bool side);
   void AIMove();
+  void AIMovePiece(move & mv);
+  void AIUnMovePiece(move & mv);
   void TestMove(Piece *piece, short pos);
   bool IsEnd();
   move AlphaBetaSearch();

@@ -3,7 +3,7 @@
 int main()
 {
   ChineseChessGame game;
-  //  game.Start();
+    game.Start();
   Advisor advisor;
   General general;
   Bishop bishop;
@@ -20,5 +20,5 @@ int main()
       std::cout << std::endl;
     }
   */
-  game.TestMove(&pawn, 101);
+  //  game.TestMove(&pawn, 101);
 }
