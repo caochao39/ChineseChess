@@ -30,21 +30,38 @@ void ChineseChessGame::Start()
 {
 	//initialize board
 	ShowBoard();
+  side_ = 0;
   //  while(!CheckEnd())
-  while(1)
+  while(!IsEnd())
     {
-      PlayerMove();
-      //      ShowBoard();
+      if(side_ == 0)
+        {
+          PlayerMove();
+          side_ = 1;
+        }
+      else
+        {
+          AIMove();
+          side_ = 0;
+        }
+
     }
 
 }
 
+bool ChineseChessGame::IsEnd()
+{
+  return 0;
+}
+void ChineseChessGame::AIMove()
+{
+  
+}
 void ChineseChessGame::PlayerMove()
 {
   short piece;
   short piece_pos;
   short next_pos;
-  bool side = 0;
   std::cout << "Please choose a piece" << std::endl;
   std::cin >> piece;
   std::cout << "Please choose a move" << std::endl;
@@ -56,8 +73,7 @@ void ChineseChessGame::PlayerMove()
           piece_pos = (i << 4) + j;
           if(board_.board_[piece_pos] == piece)
             {
-              //              std::cout << "piece: " << piece << std::endl;
-              MovePiece(piece_pos, next_pos, side);
+              MovePiece(piece_pos, next_pos, side_);
               ShowBoard();
             }
         }
