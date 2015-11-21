@@ -32,7 +32,7 @@ void ChineseChessGame::Start()
 	ShowBoard();
   side_ = 0;
   //  while(!CheckEnd())
-  while(!IsEnd())
+    while(!IsEnd())
     {
       if(side_ == 0)
         {
@@ -46,6 +46,7 @@ void ChineseChessGame::Start()
         }
 
     }
+  
 
 }
 
@@ -57,6 +58,18 @@ void ChineseChessGame::AIMove()
 {
   
 }
+
+void ChineseChessGame::TestMove(Piece *piece, short pos)
+{
+  piece->GenMove(pos, 1, board_);
+  for(int i = 0; i < piece->move_num_; i++)
+    {
+      std::cout << piece->move_array_[i].from << " " << piece->move_array_[i].to << std::endl;
+    }
+  std::cout << piece->move_num_ << std::endl;
+}
+
+
 void ChineseChessGame::PlayerMove()
 {
   short piece;

@@ -8,6 +8,8 @@
 #include "Advisor.h"
 #include "Rook.h"
 #include "Pawn.h"
+#include "General.h"
+#include "Cannon.h"
 class ChineseChessGame
 {
  public:
@@ -22,6 +24,7 @@ class ChineseChessGame
   void PlayerMove();
   void MovePiece(unsigned char from, unsigned char to, bool side);
   void AIMove();
+  void TestMove(Piece *piece, short pos);
   bool IsEnd();
   move AlphaBetaSearch();
 };
