@@ -4,7 +4,7 @@
 class Pawn : public Piece
 {
  public: 
-  char pawn_dir_[2][8] = {//0 for red 1 for black
+  short pawn_dir_[2][8] = {//0 for red 1 for black
     {-0x01, +0x01, -0x10, 0, 0, 0, 0, 0},
     {-0x01, +0x01, +0x10, 0, 0, 0, 0, 0}};
 
