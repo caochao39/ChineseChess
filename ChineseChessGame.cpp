@@ -1,6 +1,6 @@
 #include "ChineseChessGame.h"
 ChineseChessGame::ChineseChessGame(){
-  MaxDepth = 2;
+  MaxDepth = 5;
   stack_top_ = 0;
 }
 void ChineseChessGame::ShowBoard()
@@ -253,10 +253,10 @@ void ChineseChessGame::MovePiece(short from, short to, bool side)
       board_.board_[from] = 0;
     }
   else if(!(sideTag & board_.board_[to]) )//if sideTag equal 1 then is self guy
-    { 
+    {
+      piece_[board_.board_[to]] = 0;
       board_.board_[to] = board_.board_[from];
       piece_[board_.board_[from]] = to;
-      piece_[board_.board_[to]] = 0;
       board_.board_[from] = 0;
     }
   else

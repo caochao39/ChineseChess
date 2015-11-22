@@ -63,7 +63,7 @@ class ChineseChessGame
   move move_stack_[128];
   move cur_best_move_;
   int stack_top_ = 0;
-  int MaxDepth = 2;
+  int MaxDepth = 5;
   ChineseChessGame();//constructor
   void Start();
   void GenAllMove(int side);
