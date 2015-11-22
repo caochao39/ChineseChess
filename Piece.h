@@ -11,7 +11,7 @@ class Piece
 {
  public:
     move move_array_[128];
-    int move_num_;
+    int move_num_ = 0;
     unsigned char value_;
     bool in_board_[256] = {
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,

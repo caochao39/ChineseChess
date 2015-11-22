@@ -8,7 +8,7 @@ void Cannon::GenMove(unsigned char cur_pos, unsigned char side, Board board)
   for(int i = 0; i < 4; i++)
     {
       overFlag = 0;
-      for(int j = 0; j < 10; j++)
+      for(int j = 1; j <= 10; j++)
         {
           next_move = cur_pos + cannon_dir_[i] * j;
           if(board.in_board_[next_move] == 0)

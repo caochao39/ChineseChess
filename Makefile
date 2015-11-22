@@ -4,7 +4,6 @@ ChineseChessGame: main.o ChineseChessGame.o Board.o Piece.o Horse.o General.o Ad
 main.o: main.cpp ChineseChessGame.h
 	g++ -c main.cpp -std=c++11
 
-
 Board.o: Board.cpp Board.h
 	g++ -c Board.cpp -std=c++11
 
