@@ -93,8 +93,8 @@ int ChineseChessGame::ToSubscript(short p)
 }
 int ChineseChessGame::Evaluation()
 {
-  int b_value;//black
-  int w_value;//red
+  int b_value = 0;//black
+  int w_value = 0;//red
   short piece_pos;
   for(int i = board_.row_start_; i < board_.row_end_; i++ )
     {
@@ -107,14 +107,18 @@ int ChineseChessGame::Evaluation()
 	    }
 	  else if(board_.board_[piece_pos] < 32)//user
 	    {
+       
 	      w_value = w_value + piece_value_[ToSubscript(board_.board_[piece_pos])];
 	    }
 	  else//AI
 	    {
+
 	      b_value = b_value + piece_value_[ToSubscript(board_.board_[piece_pos])];
 	    }
 	}
     }
+  // std::cout << "w value: " << w_value << std::endl;
+  // std::cout << "b value: " << b_value << std::endl;
   return w_value - b_value;
 }
 void ChineseChessGame::TestMove(Piece *piece, short pos)
@@ -176,26 +180,108 @@ void ChineseChessGame::MovePiece(unsigned char from, unsigned char to, bool side
       std::cout << "You cannot shoot teamate!" << std::endl;
     }
 }
+
+bool CheckJiang(bool side)
+{
+  short wGeneral, bGeneral;//position of the two generals on board
+  bool jiang; // 1 for jiang otherwise 0
+  int sideTag = 32 - side * 16;
+  int fside = 1 - side;//opponent
+  
+  
+
+}
 void ChineseChessGame::GenAllMove(int side)
 {
+  move_vc.clear();
 	int sideTag;
   short piece_pos;
 	sideTag = 16 + side * 16;
-	for(int i = 3; i < 13; i++)// 10 row
-	{
-		for(int j = 3; j < 12; j++)// 9 column
-		{
-			piece_pos = (i << 4) + j;
-			if(!board_.board_[piece_pos] & sideTag)//other side
-			{
-				continue;
-			}
-      /*	switch(board_[piece_pos] - sideTag)
-			{
-				case 0: //general
-				case 1: //advisor
-				case 2: 
-        }*/
-		}
-	}
+  short p;//piece
+  for(int i = 0; i < 16; i++)
+    {
+      p = sideTag + i;
+      piece_pos = piece_[p];//get piece position
+      if(piece_pos == 0)
+        {
+          continue;
+        }
+      switch(i)
+        {
+        case 0: //general
+          {
+            General general;
+            general.GenMove(piece_pos, side, board_);
+            for(int i = 0; i < general.move_num_; i++)
+              {
+                move_vc.push_back(general.move_array_[i]);
+              }
+            break;
+          }
+        case 1://advisor
+        case 2:
+          {
+            Advisor advisor;
+            advisor.GenMove(piece_pos, side, board_);
+            for(int i = 0; i < advisor.move_num_; i++)
+              {
+                move_vc.push_back(advisor.move_array_[i]);
+              }
+            break;
+          }
+        case 3://bishop
+        case 4:
+          {
+            Bishop bishop;
+            bishop.GenMove(piece_pos, side, board_);
+            for(int i = 0; i < bishop.move_num_; i++)
+              {
+                move_vc.push_back(bishop.move_array_[i]);
+              }
+            break;
+          }
+        case 5://horse
+        case 6:
+          {
+            Horse horse;
+            CollectMove(&horse, piece_pos, side, board_);
+            break;
+          }
+        case 7: //rook
+        case 8:
+          {
+            Rook rook;
+            CollectMove(&rook, piece_pos, side, board_);
+            break;
+          }
+        case 9: //cannon
+        case 10:
+          {
+            Cannon cannon;
+            CollectMove(&cannon, piece_pos, side, board_);
+            break;
+          }
+        case 11: //pawn
+        case 12:
+        case 13:
+        case 14:
+        case 15:
+          {
+            Pawn pawn;
+            CollectMove(&pawn, piece_pos, side, board_);
+            break;
+          }
+        }
+    }
+  
+}
+void ChineseChessGame::CollectMove(Piece * pie, unsigned char cur_pos, unsigned char side, Board board)
+{
+  pie->GenMove(cur_pos, side, board);
+  for(int i = 0; i < pie->move_num_; i++)
+    {
+      move_vc.push_back(pie->move_array_[i]);
+    }
+
+  
 }

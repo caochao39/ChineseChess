@@ -10,6 +10,7 @@
 #include "Pawn.h"
 #include "General.h"
 #include "Cannon.h"
+#include <vector>
 class ChineseChessGame
 {
  public:
@@ -17,6 +18,12 @@ class ChineseChessGame
  	bool finished_;
 	const short piece_value_[8] = {1000, 20, 20, 40, 90, 45, 10, 0};//general, advisor, bishop, horse, rook, cannon
   bool side_;//0 for user 1 for AI
+  short piece_[48] = {
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+    199, 198, 200, 197, 201, 196, 202, 195, 203, 164, 170, 147, 149, 151, 153, 155,
+    55, 54, 56, 53, 57, 52, 58, 51, 59, 84, 90, 99, 101, 103, 105, 107
+  };
+  std::vector<move> move_vc;
 
   ChineseChessGame();//constructor
   void Start();
@@ -32,5 +39,8 @@ class ChineseChessGame
   void TestMove(Piece *piece, short pos);
   bool IsEnd();
   move AlphaBetaSearch();
+  bool CheckJiang(bool side);
+  void CollectMove(Piece * pie, unsigned char cur_pos, unsigned char side,  Board board);
 };
 #endif
+

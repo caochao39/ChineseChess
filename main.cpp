@@ -3,7 +3,13 @@
 int main()
 {
   ChineseChessGame game;
-    game.Start();
+  //   game.Start();
+  game.GenAllMove(1);
+  std::cout << "total move " << std::endl;
+  for(int i = 0; i < game.move_vc.size(); i++)
+    {
+      std::cout << "move " << i << ": " << "from: " << game.move_vc[i].from << " to " << game.move_vc[i].to << std::endl; 
+    }
   Advisor advisor;
   General general;
   Bishop bishop;
