@@ -2,3 +2,5 @@
 ChineseChessGame
 *.o
 gui/
+*#
+#*
