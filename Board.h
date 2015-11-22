@@ -26,7 +26,11 @@ const int P_VALUE[7] = //piece value
 class Board
 { 
 public:
-  bool river_cross_[10]; 
+  bool river_cross_[10];
+  const short row_start_ = 3;
+  const short row_end_ = 13;
+  const short col_start_ = 3;
+  const short col_end_ = 12;
   short board_[256] = {
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
