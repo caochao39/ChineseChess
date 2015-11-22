@@ -3,12 +3,27 @@
 int main()
 {
   ChineseChessGame game;
-     game.Start();
+  game.Start();
   /*  game.GenAllMove(1);
   std::cout << "total move " << std::endl;
   for(int i = 0; i < game.move_vc.size(); i++)
     {
       std::cout << "move " << i << ": " << "from: " << game.move_vc[i].from << " to " << game.move_vc[i].to << std::endl; 
+            }*/
+  /*  short from, to;
+  while(1)
+    {
+      game.ShowBoard();
+      std::cout << "from: " << " to: " << std::endl;
+      std::cin >> from >> to;
+      move mv;
+      mv.from = from;
+      mv.to = to;
+      game.AIMovePiece(mv);
+      game.ShowBoard();
+      short tmp;
+      std::cin >> tmp;
+      game.AIUnMovePiece();
       }*/
   Advisor advisor;
   General general;

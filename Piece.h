@@ -4,6 +4,7 @@
 
 typedef struct{
   short from, to;
+  short eaten;
 }move;
 
 

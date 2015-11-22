@@ -60,6 +60,10 @@ class ChineseChessGame
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 }};
   short position_mask_[7] = {2, 4, 16, 1, 1, 1, 8};// general, advisor, bishop, rook, horse, cannon, pawn
+  move move_stack_[128];
+  move cur_best_move_;
+  int stack_top_ = 0;
+  int MaxDepth = 2;
   ChineseChessGame();//constructor
   void Start();
   void GenAllMove(int side);
@@ -70,10 +74,10 @@ class ChineseChessGame
   int Evaluation();
   int ToSubscript(short p);
   void AIMovePiece(move & mv);
-  void AIUnMovePiece(move & mv);
+  void AIUnMovePiece();
   void TestMove(Piece *piece, short pos);
   bool IsEnd();
-  move AlphaBetaSearch();
+  int AlphaBetaSearch(int depth, int alpha, int beta);
   bool CheckJiang(bool side);
   void CollectMove(Piece * pie, unsigned char cur_pos, unsigned char side,  Board board);
 };

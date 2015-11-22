@@ -1,5 +1,8 @@
 #include "ChineseChessGame.h"
-ChineseChessGame::ChineseChessGame(){}
+ChineseChessGame::ChineseChessGame(){
+  MaxDepth = 2;
+  stack_top_ = 0;
+}
 void ChineseChessGame::ShowBoard()
 {
   //  board_
@@ -46,8 +49,14 @@ void ChineseChessGame::Start()
         }
       else
         {
-          AIMove();
-          side_ = 0;
+	  AIMove();
+	  /*GenAllMove(side_);
+	  for(int i = 0; i < move_vc.size(); i++)
+	    {
+	      std::cout << "from: " << move_vc[i].from << " to: " << move_vc[i].to << std::endl;
+	    }
+	  */
+	  side_ = 0;
         }
 
     }
@@ -61,7 +70,59 @@ bool ChineseChessGame::IsEnd()
 }
 void ChineseChessGame::AIMove()
 {
-  
+  AlphaBetaSearch(MaxDepth, -1000000, 1000000);
+  std::cout << "ai move from " << cur_best_move_.from << " to: " << cur_best_move_.to << std::endl;
+  AIMovePiece(cur_best_move_);
+  ShowBoard();
+}
+int ChineseChessGame::AlphaBetaSearch(int depth, int alpha, int beta)
+{
+  int value;
+  move move_array[1280];
+  move mv;
+  int move_num;
+  if(depth == 0)
+    {
+      return Evaluation();
+    }
+  GenAllMove(side_);
+  for(int i = 0; i < move_vc.size(); i++)
+    {
+      move_array[i] = move_vc[i];
+    }
+  move_num = move_vc.size();
+  /* for(int i = 0; i < move_vc.size(); i++)
+    {
+      std::cout << "from: " << move_vc[i].from << " to: " << move_vc[i].to << std::endl;
+      }*/
+  for(int i = 0; i < move_num; i++)
+    {
+      mv = move_array[i];
+      AIMovePiece(move_array[i]);
+      if(CheckJiang(side_))
+	{
+	  AIUnMovePiece();
+	  continue;
+	}
+      value = -AlphaBetaSearch(depth - 1, -beta, -alpha);
+      AIUnMovePiece();
+      if(value >= beta)
+	{
+	  return beta;
+	}
+      if(value > alpha)
+	{
+	  alpha = value;
+	  if(depth == MaxDepth)
+	    {
+	      std::cout << "update best move from " << mv.from << " to " << mv.to << std::endl;
+	      cur_best_move_ = mv;
+	    }
+	}
+      
+    }
+  return alpha;
+	
 }
 int ChineseChessGame::ToSubscript(short p)
 {
@@ -150,15 +211,35 @@ void ChineseChessGame::PlayerMove()
 
 }
 void ChineseChessGame::AIMovePiece(move & mv){
-  short tmp = board_.board_[mv.from];
-  board_.board_[mv.from] = board_.board_[mv.to];
-  board_.board_[mv.to] = tmp;
-}
-void ChineseChessGame::AIUnMovePiece(move & mv)
-{
-  short tmp = board_.board_[mv.to];
+
+  move_stack_[stack_top_].from = mv.from;
+  move_stack_[stack_top_].to = mv.to;
+  move_stack_[stack_top_].eaten = board_.board_[mv.to];
+  stack_top_ ++;
+
+  if(board_.board_[mv.to] != 0)
+    {
+      piece_[board_.board_[mv.to]] = 0;
+    }
   board_.board_[mv.to] = board_.board_[mv.from];
-  board_.board_[mv.from] = tmp;
+  piece_[board_.board_[mv.from]] = mv.to;
+  board_.board_[mv.from] = 0;
+}
+void ChineseChessGame::AIUnMovePiece()
+{
+  stack_top_ --;
+  short from = move_stack_[stack_top_].from;
+  short to = move_stack_[stack_top_].to;
+  short eaten = move_stack_[stack_top_].eaten;
+
+  board_.board_[from] = board_.board_[to];
+  piece_[board_.board_[from]] = from;
+  board_.board_[to] = eaten;
+  if(eaten != 0)
+    {
+      piece_[eaten] = to;
+    }
+  
 }
 void ChineseChessGame::MovePiece(short from, short to, bool side)
 {
