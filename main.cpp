@@ -3,7 +3,10 @@
 int main()
 {
   ChineseChessGame game;
-  game.Start();
+  //  char b = '';
+  //  std::cout << "相" << std::endl;
+   game.Start();
+  //  game.ShowUI();
   /*  game.GenAllMove(1);
   std::cout << "total move " << std::endl;
   for(int i = 0; i < game.move_vc.size(); i++)

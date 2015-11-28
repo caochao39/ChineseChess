@@ -68,6 +68,7 @@ class ChineseChessGame
   void Start();
   void GenAllMove(int side);
   void ShowBoard();
+  void ShowUI();
   void PlayerMove();
   void MovePiece(short from, short to, bool side);
   void AIMove();
