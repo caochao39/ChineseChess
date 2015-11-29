@@ -5,7 +5,9 @@ int main()
   ChineseChessGame game;
   //  char b = '';
   //  std::cout << "相" << std::endl;
-   game.Start();
+  
+     game.Start();
+  // std::cout << game.position_value_[0][3][196] << " " << game.position_value_[0][3][202] << std::endl;
   //  game.ShowUI();
   /*  game.GenAllMove(1);
   std::cout << "total move " << std::endl;

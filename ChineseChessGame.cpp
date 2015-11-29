@@ -32,12 +32,12 @@ void ChineseChessGame::ShowBoard()
 }
 void ChineseChessGame::ShowUI()
 {
-    char col_num = 'a';
+   short col_num = 0;
   std::cout << std::setw(2) << "" << " ";
     for(int j = board_.col_start_; j < board_.col_end_; j++)
       {
 	//	std::cout << std::setw(2) << << " ";
-	std::cout << col_num << "\t";
+	std::cout << std::setw(2) << col_num;
 	col_num++;
       }
     std::cout << std::endl;
@@ -117,7 +117,7 @@ void ChineseChessGame::ShowUI()
 	      appear = "卒";
 	      break;
 	    }
-	  std::cout << appear << "\t";
+	  std::cout << std::setw(2) << appear;
 	}
       std::cout << std::endl;
     }
@@ -127,6 +127,18 @@ void ChineseChessGame::Start()
 {
   //initialize board
   //ShowBoard();
+  short piece_pos;
+    std::cout << std::endl;
+  for(int i = 3; i < 13; i++)
+    {
+      for(int j = 3; j < 12; j++)
+        {
+          piece_pos = (i << 4) + j;
+          std::cout << piece_pos << "\t";
+        
+        }
+      std::cout << std::endl;
+    }
   ShowUI();
   side_ = 0;
   //  while(!CheckEnd())
@@ -134,10 +146,13 @@ void ChineseChessGame::Start()
     {
       if(side_ == 0)
         {
-          std::cout << "evaluation: "<< Evaluation() << std::endl; 
-          PlayerMove();
+	            std::cout << "red evaluation: "<< Evaluation() << std::endl; 
+	  PlayerMove();
+				    //	  AIMove();
+		    //AIMove();
           if(CheckJiang(1-side_))
             {
+	      //	      std::cout << ""
               std::cout << "Jiang!!!" << std::endl;
             }
           side_ = 1;
@@ -145,6 +160,7 @@ void ChineseChessGame::Start()
       else
         {
 	  AIMove();
+	  	  std::cout << " black evaluation: "<< Evaluation() << std::endl; 
 	  /*GenAllMove(side_);
 	    for(int i = 0; i < move_vc.size(); i++)
 	    {
@@ -155,18 +171,36 @@ void ChineseChessGame::Start()
         }
 
     }
-  
+  std::cout << "The game is end!" << std::endl;
+  if(side_ == 0)
+    {
+      std::cout << "The winner is AI" << std::endl;
+    }
+  else
+    {
+      std::cout << "The winner is Player!!!" << std::endl;
+    }
+
 
 }
 
 bool ChineseChessGame::IsEnd()
 {
+  if (piece_[16] == 0 || piece_[32] == 0)
+    {
+      return 1;
+    }
+
   return 0;
 }
 void ChineseChessGame::AIMove()
 {
   AlphaBetaSearch(MaxDepth, -1000000, 1000000);
-  std::cout << "ai move from " << cur_best_move_.from << " to: " << cur_best_move_.to << std::endl;
+  short from_row = (cur_best_move_.from - 51) / 16;
+  short from_col = (cur_best_move_.to - 51) % 16;
+  short to_row = (cur_best_move_.to - 51) / 16;
+  short to_col = (cur_best_move_.to - 51) % 16;
+  std::cout << "ai move from " << from_row << " " << from_col << " to: " << to_row << " " << to_col << std::endl;
   AIMovePiece(cur_best_move_);
   //  ShowBoard();
   ShowUI();
@@ -174,7 +208,7 @@ void ChineseChessGame::AIMove()
 int ChineseChessGame::AlphaBetaSearch(int depth, int alpha, int beta)
 {
   int value;
-  move move_array[1280];
+  move move_array[100000];
   move mv;
   int move_num;
   if(depth == 0)
@@ -182,6 +216,7 @@ int ChineseChessGame::AlphaBetaSearch(int depth, int alpha, int beta)
       return Evaluation();
     }
   GenAllMove(side_);
+
   for(int i = 0; i < move_vc.size(); i++)
     {
       move_array[i] = move_vc[i];
@@ -211,7 +246,7 @@ int ChineseChessGame::AlphaBetaSearch(int depth, int alpha, int beta)
 	  alpha = value;
 	  if(depth == MaxDepth)
 	    {
-	      std::cout << "update best move from " << mv.from << " to " << mv.to << std::endl;
+	      //	      std::cout << "update best move from " << mv.from << " to " << mv.to << std::endl;
 	      cur_best_move_ = mv;
 	    }
 	}
@@ -286,14 +321,19 @@ int ChineseChessGame::Evaluation()
     {
       if(piece_[i] > 0)
 	{
-	  w_value = w_value + piece_value_[ToSubscript(i)];
+	  //	  w_value = w_value + piece_value_[ToSubscript(i)];
+	  //	  w_value = w_value + piece_value_[i];
+	  	  w_value = w_value + position_value_[0][piece_num_to_type_[i]][piece_[i]] + piece_value_[ToSubscript(i)];
+
 	}
     }
   for(int i = 32; i < 48; i++)
     {
       if(piece_[i] > 0)
 	{
-	  b_value = b_value + piece_value_[ToSubscript(i)];
+	  //	  b_value = b_value + piece_value_[ToSubscript(i)];
+	  //	  b_value = b_value + piece_value_[i];
+	  b_value = b_value + position_value_[1][piece_num_to_type_[i]][piece_[i]] + piece_value_[ToSubscript(i)];
 	}
     }
   return w_value - b_value;
@@ -312,15 +352,15 @@ void ChineseChessGame::TestMove(Piece *piece, short pos)
 void getPlayerChoice(short &piece, short &move)
 {
   short piece_row;
-  char piece_col;
+  short piece_col;
   short move_row;
-  char move_col;
-  std::cout << "Please choose a piece specified in row and column numbers (eg. e3)" << std::endl;
+  short move_col;
+  std::cout << "Please choose a piece specified in row and column numbers (eg. 3 3)" << std::endl;
   std::cin >> piece_row >> piece_col;
   std::cout << "Please choose a destination specified in row and column numbers (eg. e3)" << std::endl;
   std::cin >> move_row >> move_col;
-  short piece_pos = (piece_row ) * 16 + (piece_col - 'a') + 51 ;
-  short move_pos = (move_row ) * 16 + (move_col - 'a') + 51;
+  short piece_pos = (piece_row ) * 16 + piece_col + 51 ;
+  short move_pos = (move_row ) * 16 + move_col + 51;
   piece = piece_pos;
   move = move_pos;
   // std::cout << "piece position " << piece_pos << std::endl;
@@ -519,7 +559,7 @@ bool ChineseChessGame::CheckJiang(bool side)
     }
 
   //check if attacked by cannon
-  bool overFlag = 0;
+  int overFlag = 0;
   for(int i = 9; i <= 10; i++)
     {
       piece_pos = piece_[sideTag + i];
@@ -540,13 +580,16 @@ bool ChineseChessGame::CheckJiang(bool side)
                     }
                   else
                     {
-                      overFlag = 2;
+		      overFlag = 2;
+		      //std::cout << "over flag " << overFlag << std::endl;
                       break;
                     }
                 }
             }
+
           if(overFlag == 1)
             {
+	      //	      std::cout << "jiang by cannon" << std::endl;
               return 1;
             }
         }
