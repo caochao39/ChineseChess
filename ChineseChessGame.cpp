@@ -127,18 +127,6 @@ void ChineseChessGame::Start()
 {
   //initialize board
   //ShowBoard();
-  short piece_pos;
-    std::cout << std::endl;
-  for(int i = 3; i < 13; i++)
-    {
-      for(int j = 3; j < 12; j++)
-        {
-          piece_pos = (i << 4) + j;
-          std::cout << piece_pos << "\t";
-        
-        }
-      std::cout << std::endl;
-    }
   ShowUI();
   side_ = 0;
   //  while(!CheckEnd())
@@ -159,6 +147,7 @@ void ChineseChessGame::Start()
         }
       else
         {
+          std::cout << "It is AI's turn, please wait..." << std::endl;
 	  AIMove();
 	  	  std::cout << " black evaluation: "<< Evaluation() << std::endl; 
 	  /*GenAllMove(side_);
@@ -197,7 +186,7 @@ void ChineseChessGame::AIMove()
 {
   AlphaBetaSearch(MaxDepth, -1000000, 1000000);
   short from_row = (cur_best_move_.from - 51) / 16;
-  short from_col = (cur_best_move_.to - 51) % 16;
+  short from_col = (cur_best_move_.from - 51) % 16;
   short to_row = (cur_best_move_.to - 51) / 16;
   short to_col = (cur_best_move_.to - 51) % 16;
   std::cout << "ai move from " << from_row << " " << from_col << " to: " << to_row << " " << to_col << std::endl;
@@ -208,7 +197,7 @@ void ChineseChessGame::AIMove()
 int ChineseChessGame::AlphaBetaSearch(int depth, int alpha, int beta)
 {
   int value;
-  move move_array[100000];
+  move move_array[10000];
   move mv;
   int move_num;
   if(depth == 0)
@@ -216,7 +205,7 @@ int ChineseChessGame::AlphaBetaSearch(int depth, int alpha, int beta)
       return Evaluation();
     }
   GenAllMove(side_);
-
+  std::cout << "move array size: " << move_vc.size() << std::endl;
   for(int i = 0; i < move_vc.size(); i++)
     {
       move_array[i] = move_vc[i];
@@ -246,7 +235,7 @@ int ChineseChessGame::AlphaBetaSearch(int depth, int alpha, int beta)
 	  alpha = value;
 	  if(depth == MaxDepth)
 	    {
-	      //	      std::cout << "update best move from " << mv.from << " to " << mv.to << std::endl;
+        std::cout << "update best move from " << (mv.from - 51) / 16 << " " <<  (mv.from - 51) % 16 << " to " << (mv.to - 51) / 16 << " " <<(mv.to - 51) % 16 << " value: " << value << std::endl;
 	      cur_best_move_ = mv;
 	    }
 	}
@@ -322,8 +311,8 @@ int ChineseChessGame::Evaluation()
       if(piece_[i] > 0)
 	{
 	  //	  w_value = w_value + piece_value_[ToSubscript(i)];
-	  //	  w_value = w_value + piece_value_[i];
-	  	  w_value = w_value + position_value_[0][piece_num_to_type_[i]][piece_[i]] + piece_value_[ToSubscript(i)];
+	  	  w_value = w_value + piece_value_[i];
+    //	  	  w_value = w_value + position_value_[0][piece_num_to_type_[i]][piece_[i]] + piece_value_[ToSubscript(i)];
 
 	}
     }
@@ -332,8 +321,8 @@ int ChineseChessGame::Evaluation()
       if(piece_[i] > 0)
 	{
 	  //	  b_value = b_value + piece_value_[ToSubscript(i)];
-	  //	  b_value = b_value + piece_value_[i];
-	  b_value = b_value + position_value_[1][piece_num_to_type_[i]][piece_[i]] + piece_value_[ToSubscript(i)];
+	  	  b_value = b_value + piece_value_[i];
+	  //b_value = b_value + position_value_[1][piece_num_to_type_[i]][piece_[i]] + piece_value_[ToSubscript(i)];
 	}
     }
   return w_value - b_value;
@@ -355,10 +344,14 @@ void getPlayerChoice(short &piece, short &move)
   short piece_col;
   short move_row;
   short move_col;
-  std::cout << "Please choose a piece specified in row and column numbers (eg. 3 3)" << std::endl;
-  std::cin >> piece_row >> piece_col;
-  std::cout << "Please choose a destination specified in row and column numbers (eg. e3)" << std::endl;
-  std::cin >> move_row >> move_col;
+  std::cout << "Please choose a piece specified in row and column numbers (eg. 3 3) row: " << std::endl;
+  std::cin >> piece_row;
+  std::cout << "column: "<< std::endl;
+  std::cin  >> piece_col;
+  std::cout << "Please choose a destination specified in row and column numbers (eg. e3) row: " << std::endl;
+  std::cin >> move_row;
+  std::cout << "column: "<< std::endl;
+  std::cin >> move_col;
   short piece_pos = (piece_row ) * 16 + piece_col + 51 ;
   short move_pos = (move_row ) * 16 + move_col + 51;
   piece = piece_pos;
@@ -377,23 +370,32 @@ void ChineseChessGame::PlayerMove()
   std::cout << "Please choose a move" << std::endl;
   std::cin >> next_pos;
   */
-  piece = 0;
+ restart:  piece = 0;
   while(piece == 0)
     {
       getPlayerChoice(piece_pos, next_pos);
       piece = board_.board_[piece_pos];
       if(piece == 0)
-	{
-	  std::cout << "There is no piece there!" << std::endl;
-	}
+        {
+          std::cout << "There is no piece there!" << std::endl;
+        }
       else
-	{
-	  break;
-	}
+        {
+          break;
+        }
     }
-  MovePiece(piece_[piece], next_pos, side_);
-  //  ShowBoard();
-  ShowUI();
+  //  std::cout << "piece number: " << piece << std::endl;
+  if((piece & 32))
+    {
+      std::cout << "It is not your piece!!" << std::endl;
+      goto restart;
+    }
+  else
+    {
+      MovePiece(piece_[piece], next_pos, side_);
+      //  ShowBoard();
+      ShowUI();
+    }
 
 }
 void ChineseChessGame::AIMovePiece(move & mv){
@@ -659,33 +661,21 @@ void ChineseChessGame::GenAllMove(int side)
         case 0: //general
           {
             General general;
-            general.GenMove(piece_pos, side, board_);
-            for(int i = 0; i < general.move_num_; i++)
-              {
-                move_vc.push_back(general.move_array_[i]);
-              }
+            CollectMove(&general, piece_pos, side, board_);
             break;
           }
         case 1://advisor
         case 2:
           {
             Advisor advisor;
-            advisor.GenMove(piece_pos, side, board_);
-            for(int i = 0; i < advisor.move_num_; i++)
-              {
-                move_vc.push_back(advisor.move_array_[i]);
-              }
+            CollectMove(&advisor, piece_pos, side, board_);
             break;
           }
         case 3://bishop
         case 4:
           {
             Bishop bishop;
-            bishop.GenMove(piece_pos, side, board_);
-            for(int i = 0; i < bishop.move_num_; i++)
-              {
-                move_vc.push_back(bishop.move_array_[i]);
-              }
+            CollectMove(&bishop, piece_pos, side, board_);
             break;
           }
         case 5://horse
