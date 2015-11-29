@@ -205,7 +205,7 @@ int ChineseChessGame::AlphaBetaSearch(int depth, int alpha, int beta)
       return Evaluation();
     }
   GenAllMove(side_);
-  std::cout << "move array size: " << move_vc.size() << std::endl;
+  //  std::cout << "move array size: " << move_vc.size() << std::endl;
   for(int i = 0; i < move_vc.size(); i++)
     {
       move_array[i] = move_vc[i];
@@ -311,8 +311,8 @@ int ChineseChessGame::Evaluation()
       if(piece_[i] > 0)
 	{
 	  //	  w_value = w_value + piece_value_[ToSubscript(i)];
-	  	  w_value = w_value + piece_value_[i];
-    //	  	  w_value = w_value + position_value_[0][piece_num_to_type_[i]][piece_[i]] + piece_value_[ToSubscript(i)];
+    // 	  w_value = w_value + piece_value_[i];
+    	  	  w_value = w_value + position_value_[0][piece_num_to_type_[i]][piece_[i]] + piece_value_[ToSubscript(i)];
 
 	}
     }
@@ -321,8 +321,8 @@ int ChineseChessGame::Evaluation()
       if(piece_[i] > 0)
 	{
 	  //	  b_value = b_value + piece_value_[ToSubscript(i)];
-	  	  b_value = b_value + piece_value_[i];
-	  //b_value = b_value + position_value_[1][piece_num_to_type_[i]][piece_[i]] + piece_value_[ToSubscript(i)];
+	  //	  b_value = b_value + piece_value_[i];
+	  b_value = b_value + position_value_[1][piece_num_to_type_[i]][piece_[i]] + piece_value_[ToSubscript(i)];
 	}
     }
   return w_value - b_value;
@@ -344,6 +344,7 @@ void getPlayerChoice(short &piece, short &move)
   short piece_col;
   short move_row;
   short move_col;
+ reenter:
   std::cout << "Please choose a piece specified in row and column numbers (eg. 3 3) row: " << std::endl;
   std::cin >> piece_row;
   std::cout << "column: "<< std::endl;
@@ -352,6 +353,11 @@ void getPlayerChoice(short &piece, short &move)
   std::cin >> move_row;
   std::cout << "column: "<< std::endl;
   std::cin >> move_col;
+  if(piece_row > 9 || piece_col > 8 || move_row > 9 || move_col > 8)
+    {
+      std::cout << "invalid input!!" <<std::endl;
+      goto reenter;
+    }
   short piece_pos = (piece_row ) * 16 + piece_col + 51 ;
   short move_pos = (move_row ) * 16 + move_col + 51;
   piece = piece_pos;
